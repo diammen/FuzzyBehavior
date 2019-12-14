@@ -192,4 +192,18 @@ namespace FuzzyBehavior
             return BehaviorResult.Success;
         }
     }
+
+    public class Fuzzy 
+    {
+        public static float[] EvaluateInput(AnimationCurve[] sets, float input)
+        {
+            float[] membershipValues = new float[sets.Length];
+            for (int i = 0; i < sets.Length; i++)
+            {
+                membershipValues[i] = sets[i].Evaluate(input);
+            }
+
+            return membershipValues;
+        }
+    }
 }

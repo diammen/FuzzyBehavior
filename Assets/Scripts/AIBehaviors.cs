@@ -5,7 +5,16 @@ using FuzzyBehavior;
 
 namespace AIBehaviors
 {
-    public class Seek : IBehavior
+    public class TargetInRange : IBehavior
+    {
+        Transform target;
+
+        public BehaviorResult DoBehavior()
+        {
+            return BehaviorResult.Success;
+        }
+    }
+    public class SeekTarget : IBehavior
     {
         Transform target;
 
