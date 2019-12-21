@@ -7,8 +7,12 @@ namespace AIBehaviors
 {
     public class TargetInRange : IBehavior
     {
-        Transform target;
+        TestAI agent;
 
+        TargetInRange(TestAI _agent)
+        {
+            agent = _agent;
+        }
         public BehaviorResult DoBehavior()
         {
             
@@ -17,7 +21,7 @@ namespace AIBehaviors
     }
     public class SeekTarget : IBehavior
     {
-        Transform target;
+        TestAI agent;
 
         public BehaviorResult DoBehavior()
         {

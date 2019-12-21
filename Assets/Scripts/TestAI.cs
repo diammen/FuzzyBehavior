@@ -19,13 +19,21 @@ public class TestAI : MonoBehaviour
 
     public Transform target;
 
-    public AnimationCurve tooFar, far, near;
+    public MembershipFunction distance;
+    public MembershipFunction intimidation;
+    public MembershipFunction speed;
 
-    public Text inputText;
-    public Text tooFarValue, farValue, nearValue;
+    public Text veryFarValue, farValue, nearValue;
+    public Text terrifiedValue, scaredValue, notAfraidValue;
 
-    float input = 0;
-    float[] truthValues;
+    public Text speedValue;
+
+    public float targetSize;
+    float distanceInput = 0;
+    float intimidationInput = 0;
+    float moveSpeed;
+    float[] distanceTruthValues;
+    float[] intimidationTruthValues;
 
     // Start is called before the first frame update
     void Start()
@@ -41,12 +49,24 @@ public class TestAI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        input = (target.position - transform.position).magnitude;
+        distanceInput = (target.position - transform.position).magnitude;
+        distanceTruthValues = Fuzzy.EvaluateInput(distance.sets, distanceInput);
 
-        truthValues = Fuzzy.EvaluateInput(new AnimationCurve[] { tooFar, far, near }, input);
+        intimidationInput = targetSize;
+        intimidationTruthValues = Fuzzy.EvaluateInput(intimidation.sets, intimidationInput);
 
-        tooFarValue.text = truthValues[0].ToString() + " true";
-        farValue.text = truthValues[1].ToString() + " true";
-        nearValue.text = truthValues[2].ToString() + " true";
+
+        moveSpeed = Fuzzy.Defuzzify(new float[] { Fuzzy.EvaluateInput(speed.sets[0], Fuzzy.AND(distance.sets[0], intimidation.sets[0], distanceInput, intimidationInput)) }, new float[] { Fuzzy.Maxima(speed.sets[0]) });
+
+        nearValue.text = distanceTruthValues[0].ToString() + " true";
+        farValue.text = distanceTruthValues[1].ToString() + " true";
+        veryFarValue.text = distanceTruthValues[2].ToString() + " true";
+
+        notAfraidValue.text = intimidationTruthValues[0].ToString() + " true";
+        scaredValue.text = intimidationTruthValues[1].ToString() + " true";
+        terrifiedValue.text = intimidationTruthValues[2].ToString() + " true";
+
+        speedValue.text = moveSpeed.ToString();
+
     }
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace FuzzyBehavior
@@ -101,7 +100,7 @@ namespace FuzzyBehavior
         public IBehavior child;
         float cooldown;
         float cooldownDuration;
-        
+
         public Cooldown(IBehavior _child, float _cooldownDuration)
         {
             child = _child;
@@ -193,7 +192,9 @@ namespace FuzzyBehavior
         }
     }
 
-    public class Fuzzy 
+    // note implement fuzzy inference
+
+    public class Fuzzy
     {
         public static float[] EvaluateInput(AnimationCurve[] sets, float input)
         {
@@ -205,5 +206,136 @@ namespace FuzzyBehavior
 
             return membershipValues;
         }
+
+        public static float EvaluateInput(AnimationCurve set, float input)
+        {
+            return set.Evaluate(input);
+        }
+
+        public static float[] MaxMembershipPositions(AnimationCurve[] sets)
+        {
+            float[] maxMembershipValues = new float[sets.Length];
+            for (int i = 0; i < sets.Length; i++)
+            {
+                maxMembershipValues[i] = Maxima(sets[i]);
+            }
+
+            return maxMembershipValues;
+        }
+
+        public static float Defuzzify(float[] membershipAggregate, float[] maxMembership)
+        {
+            // Average of Maxima method
+            float[] valueProducts = new float[membershipAggregate.Length];
+            for (int i = 0; i < valueProducts.Length; i++)
+            {
+                valueProducts[i] = membershipAggregate[i] * maxMembership[i];
+            }
+
+            return Sum(valueProducts) / Sum(membershipAggregate);
+        }
+
+        public static float Sum(float[] values)
+        {
+            float sum = 0;
+            for (int i = 0; i < values.Length; i++)
+            {
+                sum += values[i];
+            }
+            return sum;
+        }
+
+        public static float Maxima(AnimationCurve curve)
+        {
+            float max = 1;
+            for (int i = 0; i < curve.keys.Length - 1; i++)
+            {
+                if (curve.keys[i].value >= max)
+                {
+                    if (curve.keys[i].value == curve.keys[i + 1].value)
+                        return Sum(new float[] { curve.keys[i].time, curve.keys[i + 1].time }) / 2;
+                    else
+                        return curve.keys[i].time;
+                }
+            }
+            return 0;
+        }
+
+        public static float LeftShMaxima(AnimationCurve curve)
+        {
+            // end of the plateau divided 2
+            return curve.keys[1].time / 2;
+        }
+
+        public static float RightShMaxima(AnimationCurve curve)
+        {
+            // end of the plateau divided by 2
+            return curve.keys[2].time / 2;
+        }
+
+        public static float TrapezoidMaxima(AnimationCurve curve)
+        {
+            return (curve.keys[3].time + curve.keys[4].time) / 2;
+        }
+
+        public static float Min(AnimationCurve curve)
+        {
+            Keyframe min = new Keyframe();
+            for (int i = 0; i < curve.keys.Length; i++)
+            {
+                if (curve.keys[i].value < min.value)
+                {
+                    min = curve.keys[i];
+                }
+            }
+            return min.time;
+        }
+
+        public static float AND(float lhs, float rhs)
+        {
+            return lhs < rhs ? lhs : rhs;
+        }
+
+        public static float AND(AnimationCurve lhs, AnimationCurve rhs, float lhsInput, float rhsInput)
+        {
+            float mLhs = lhs.Evaluate(lhsInput);
+            float mRhs = rhs.Evaluate(rhsInput);
+
+            return mLhs < mRhs ? mLhs : mRhs;
+        }
+
+        public static float OR(float lhs, float rhs)
+        {
+            return lhs > rhs ? lhs : rhs;
+        }
+
+        public static float OR(AnimationCurve lhs, AnimationCurve rhs, float lhsInput, float rhsInput)
+        {
+            float mLhs = lhs.Evaluate(lhsInput);
+            float mRhs = rhs.Evaluate(rhsInput);
+
+            return mLhs > mRhs ? mLhs : mRhs;
+        }
+
+        public static float NOT(float f)
+        {
+            return 1 - f;
+        }
+    }
+
+    [System.Serializable]
+    public class MembershipFunction
+    {
+        public AnimationCurve[] sets;
+
+        public MembershipFunction(AnimationCurve[] _sets)
+        {
+            sets = _sets;
+        }
+    }
+
+    public static class FuzzyRule
+    {
+        
     }
 }
