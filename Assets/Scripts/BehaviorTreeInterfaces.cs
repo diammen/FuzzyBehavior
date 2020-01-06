@@ -194,7 +194,7 @@ namespace FuzzyBehavior
 
     // note implement fuzzy inference
 
-    public class Fuzzy
+    public static class Fuzzy
     {
         public static float[] EvaluateInput(AnimationCurve[] sets, float input)
         {
@@ -223,9 +223,9 @@ namespace FuzzyBehavior
             return maxMembershipValues;
         }
 
+        // Average of Maxima method
         public static float Defuzzify(float[] membershipAggregate, float[] maxMembership)
         {
-            // Average of Maxima method
             float[] valueProducts = new float[membershipAggregate.Length];
             for (int i = 0; i < valueProducts.Length; i++)
             {
@@ -259,6 +259,17 @@ namespace FuzzyBehavior
                 }
             }
             return 0;
+        }
+
+        public static float[] Maxima(AnimationCurve[] curves)
+        {
+            float[] results = new float[curves.Length];
+            for (int i = 0; i < curves.Length; i++)
+            {
+                results[0] = Maxima(curves[i]);
+            }
+
+            return results;
         }
 
         public static float LeftShMaxima(AnimationCurve curve)

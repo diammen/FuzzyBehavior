@@ -56,7 +56,10 @@ public class TestAI : MonoBehaviour
         intimidationTruthValues = Fuzzy.EvaluateInput(intimidation.sets, intimidationInput);
 
 
-        moveSpeed = Fuzzy.Defuzzify(new float[] { Fuzzy.EvaluateInput(speed.sets[0], Fuzzy.AND(distance.sets[0], intimidation.sets[0], distanceInput, intimidationInput)) }, new float[] { Fuzzy.Maxima(speed.sets[0]) });
+        moveSpeed = Fuzzy.Defuzzify(new float[] { Fuzzy.OR(distance.sets[0], intimidation.sets[0], distanceInput, intimidationInput),
+                                        Fuzzy.OR(distance.sets[1], intimidation.sets[1], distanceInput, intimidationInput), 
+                                        Fuzzy.OR(distance.sets[2], intimidation.sets[2], distanceInput, intimidationInput) },
+                                    Fuzzy.Maxima(speed.sets));
 
         nearValue.text = distanceTruthValues[0].ToString() + " true";
         farValue.text = distanceTruthValues[1].ToString() + " true";
