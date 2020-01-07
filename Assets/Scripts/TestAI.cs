@@ -4,18 +4,20 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using FuzzyBehavior;
+using AIBehaviors;
 
 public class TestAI : MonoBehaviour
 {
     Selector rootNode;
-    Sequence actionSequence;
+    Sequence searchForTarget;
 
     Cooldown cooldown;
     TimeLimit timeLimit;
 
-    Action action1;
-    Action action2;
-    Action action3;
+    Idle idle;
+    FindTarget findTarget;
+    SeekTarget seekTarget;
+    CalculateSpeed calcSpeed;
 
     public Transform target;
 
@@ -28,38 +30,36 @@ public class TestAI : MonoBehaviour
 
     public Text speedValue;
 
+    public CheckTrigger TargetDetection;
+
     public float targetSize;
-    float distanceInput = 0;
-    float intimidationInput = 0;
-    float moveSpeed;
+    public float moveSpeed;
+    public float speedMod;
+    public float distanceInput = 0;
+    public float intimidationInput = 0;
     float[] distanceTruthValues;
     float[] intimidationTruthValues;
 
     // Start is called before the first frame update
     void Start()
     {
-        action1 = new Action();
-        action2 = new Action();
-        action3 = new Action();
-        timeLimit = new TimeLimit(action2, 1f);
-        actionSequence = new  Sequence(new IBehavior[] { action1, timeLimit });
-        rootNode = new Selector(new IBehavior[] { actionSequence, action3 });
+        idle = new Idle(this);
+        findTarget = new FindTarget(this);
+        seekTarget = new SeekTarget(this);
+        calcSpeed = new CalculateSpeed(this);
+        timeLimit = new TimeLimit(findTarget, 1f);
+        searchForTarget = new Sequence(new IBehavior[] { timeLimit, calcSpeed, seekTarget });
+        rootNode = new Selector(new IBehavior[] { searchForTarget, idle });
     }
 
     // Update is called once per frame
     void Update()
     {
-        distanceInput = (target.position - transform.position).magnitude;
+        rootNode.DoBehavior();
+
         distanceTruthValues = Fuzzy.EvaluateInput(distance.sets, distanceInput);
 
-        intimidationInput = targetSize;
         intimidationTruthValues = Fuzzy.EvaluateInput(intimidation.sets, intimidationInput);
-
-
-        moveSpeed = Fuzzy.Defuzzify(new float[] { Fuzzy.OR(distance.sets[0], intimidation.sets[0], distanceInput, intimidationInput),
-                                        Fuzzy.OR(distance.sets[1], intimidation.sets[1], distanceInput, intimidationInput), 
-                                        Fuzzy.OR(distance.sets[2], intimidation.sets[2], distanceInput, intimidationInput) },
-                                    Fuzzy.Maxima(speed.sets));
 
         nearValue.text = distanceTruthValues[0].ToString() + " true";
         farValue.text = distanceTruthValues[1].ToString() + " true";

@@ -139,8 +139,7 @@ namespace FuzzyBehavior
             // continue processing child node while still within time limit
             if (Time.time < timeLimit + duration)
             {
-                child.DoBehavior();
-                return BehaviorResult.Success;
+                return child.DoBehavior();
             }
 
             // set new timestamp and return failure
@@ -148,51 +147,6 @@ namespace FuzzyBehavior
             return BehaviorResult.Failure;
         }
     }
-
-    // repeat the child node's process a set number of times
-    public class Loop : IBehavior
-    {
-        public IBehavior child;
-
-        public Loop(IBehavior _child)
-        {
-            child = _child;
-        }
-        public BehaviorResult DoBehavior()
-        {
-            return BehaviorResult.Success;
-        }
-    }
-
-    // repeat the child node's process until it fails
-    public class LoopUntilFail : IBehavior
-    {
-        public IBehavior child;
-
-        public LoopUntilFail(IBehavior _child)
-        {
-            child = _child;
-        }
-        public BehaviorResult DoBehavior()
-        {
-
-            return BehaviorResult.Success;
-        }
-    }
-
-    public class Action : IBehavior
-    {
-        public Action()
-        {
-
-        }
-        public BehaviorResult DoBehavior()
-        {
-            return BehaviorResult.Success;
-        }
-    }
-
-    // note implement fuzzy inference
 
     public static class Fuzzy
     {
