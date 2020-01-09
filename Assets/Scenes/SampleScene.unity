@@ -826,25 +826,25 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 15
+        time: 2
         value: 1
         inSlope: -0
-        outSlope: -0.028571429
+        outSlope: -0.5
         tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 50
+        time: 4
         value: 0
-        inSlope: -0.028571429
+        inSlope: -0.5
         outSlope: 0
         tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0
       - serializedVersion: 3
-        time: 100
+        time: 8
         value: 0
         inSlope: -0
         outSlope: -0.02857143
@@ -867,34 +867,34 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 15
+        time: 2
         value: 0
         inSlope: -0
-        outSlope: 0.028571429
+        outSlope: 0.5
         tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 50
+        time: 4
         value: 1
-        inSlope: 0.028571429
-        outSlope: -0.028571429
+        inSlope: 0.5
+        outSlope: -0.5
         tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 85
+        time: 6
         value: 0
-        inSlope: -0.028571429
+        inSlope: -0.5
         outSlope: 0
         tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 100
+        time: 8
         value: 0
         inSlope: -0
         outSlope: -0.04999999
@@ -917,28 +917,28 @@ MonoBehaviour:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 50
+        time: 4
         value: 0
         inSlope: -0
-        outSlope: 0.028571429
+        outSlope: 0.5
         tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 85
+        time: 6
         value: 1
-        inSlope: 0.028571429
+        inSlope: 0.5
         outSlope: 0
         tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 100
+        time: 8
         value: 1
         inSlope: -0
-        outSlope: 0.033333287
+        outSlope: -0.023809524
         tangentMode: 69
         weightedMode: 0
         inWeight: 0.33333334
@@ -1802,7 +1802,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 10
+  m_Radius: 15
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!4 &1286625591
 Transform:
@@ -2187,6 +2187,7 @@ GameObject:
   - component: {fileID: 1904696678}
   - component: {fileID: 1904696677}
   - component: {fileID: 1904696681}
+  - component: {fileID: 1904696682}
   m_Layer: 8
   m_Name: Red Cube
   m_TagString: Untagged
@@ -2283,6 +2284,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &1904696682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1904696676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7414d4c551d78a24b97a8bb3a05ce9b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 7
 --- !u!1 &2062914844
 GameObject:
   m_ObjectHideFlags: 0

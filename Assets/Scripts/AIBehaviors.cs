@@ -63,11 +63,11 @@ namespace AIBehaviors
         public BehaviorResult DoBehavior()
         {
             agent.distanceInput = (agent.target.position - agent.transform.position).magnitude;
-            agent.intimidationInput = agent.targetSize;
+            agent.intimidationInput = agent.target.GetComponent<Renderer>().bounds.size.magnitude;
 
-            agent.moveSpeed = Fuzzy.Defuzzify(new float[] { Fuzzy.OR(agent.distance.sets[0], agent.intimidation.sets[2], agent.distanceInput, agent.intimidationInput),
+            agent.moveSpeed = Fuzzy.Defuzzify(new float[] { Fuzzy.OR(agent.distance.sets[0], agent.intimidation.sets[0], agent.distanceInput, agent.intimidationInput),
                                         Fuzzy.OR(agent.distance.sets[1], agent.intimidation.sets[1], agent.distanceInput, agent.intimidationInput),
-                                        Fuzzy.OR(agent.distance.sets[2], agent.intimidation.sets[0], agent.distanceInput, agent.intimidationInput) },
+                                        Fuzzy.OR(agent.distance.sets[2], agent.intimidation.sets[2], agent.distanceInput, agent.intimidationInput) },
                             Fuzzy.Maxima(agent.speed.sets));
             return BehaviorResult.Success;
         }
